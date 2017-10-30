@@ -99,6 +99,13 @@ func (packet *Packet) Next(reader bitreader.BitReader) error {
 				return err
 			}
 		}
+	case packet.StreamID == private_stream_2:
+		payloadLen := int(packet.PacketLength)
+		junk := make([]byte, payloadLen)
+		_, err = io.ReadAtLeast(reader, junk, payloadLen)
+		if err != nil {
+			return err
+		}
 	case packet.StreamID == padding_stream:
 		payloadLen := int(packet.PacketLength)
 		junk := make([]byte, payloadLen)
