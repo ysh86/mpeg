@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/32bitkid/bitreader"
-	"github.com/32bitkid/mpeg/ps"
+	"github.com/ysh86/mpeg/ps"
 )
 
 func main() {
