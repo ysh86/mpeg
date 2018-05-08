@@ -1,7 +1,7 @@
 package ps
 
 import "github.com/32bitkid/bitreader"
-import "github.com/32bitkid/mpeg/pes"
+import "github.com/ysh86/mpeg/pes"
 
 type Pack struct {
 	*PackHeader

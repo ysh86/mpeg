@@ -7,7 +7,7 @@ import (
 
 import (
 	"github.com/32bitkid/bitreader"
-	"github.com/32bitkid/mpeg/pes"
+	"github.com/ysh86/mpeg/pes"
 )
 
 type packreader struct {

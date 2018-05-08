@@ -10,7 +10,7 @@ const SyncByte = 0x47
 
 // MaxPayloadSize is the maximum payload, in bytes, that a
 // Transport Stream packet can contain.
-const MaxPayloadSize = 184
+const MaxPayloadSize = 188 - 4
 
 // ErrNoSyncByte is the error returned if a sync byte cannot be located in the bitstream.
 var ErrNoSyncByte = errors.New("no sync byte")
@@ -122,6 +122,8 @@ func (packet *Packet) Next(br bitreader.BitReader) (err error) {
 			return
 		}
 		payloadSize -= length + 1
+	} else {
+		packet.AdaptationField = nil
 	}
 
 	if packet.AdaptationFieldControl == PayloadOnly || packet.AdaptationFieldControl == FieldThenPayload {
@@ -133,6 +135,8 @@ func (packet *Packet) Next(br bitreader.BitReader) (err error) {
 		} else if err != nil {
 			return
 		}
+	} else {
+		packet.Payload = nil
 	}
 
 	return nil

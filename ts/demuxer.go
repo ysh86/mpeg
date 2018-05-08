@@ -1,7 +1,10 @@
 package ts
 
-import "github.com/32bitkid/bitreader"
-import "io"
+import (
+	"io"
+
+	"github.com/32bitkid/bitreader"
+)
 
 // Creates a new MPEG-2 Transport Stream Demultiplexer
 func NewDemuxer(reader io.Reader) *Demuxer {
@@ -57,7 +60,6 @@ func (tsd *Demuxer) Go() <-chan bool {
 	var skipping = true
 	var skipUntil = tsd.skipUntil
 	var takeWhile = tsd.takeWhile
-	var p = &Packet{}
 
 	go func() {
 
@@ -69,7 +71,7 @@ func (tsd *Demuxer) Go() <-chan bool {
 		}()
 
 		for {
-			err := p.Next(tsd.reader)
+			p, err := NewPacket(tsd.reader)
 
 			if err != nil {
 				tsd.lastErr = err

@@ -4,7 +4,7 @@ import "errors"
 import "io"
 import "io/ioutil"
 import "github.com/32bitkid/bitreader"
-import "github.com/32bitkid/mpeg/ts"
+import "github.com/ysh86/mpeg/ts"
 
 // StartCodePrefix is the prefix that signals the start a PES packet.
 const StartCodePrefix = 0x000001
