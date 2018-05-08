@@ -25,6 +25,7 @@ func main() {
 	// Decode the PS stream
 	bitReader := bitreader.NewBitReader(fileReader)
 	decoder := ps.NewDecoder(bitReader)
+	eop := make(chan bool)
 	go func() {
 		for i := 0; true; i++ {
 			pack := <-decoder.Packs()
@@ -34,7 +35,7 @@ func main() {
 			}
 			scr := pack.PackHeader.SystemClockReferenceBase*300 + pack.PackHeader.SystemClockReferenceExtension
 			bps := pack.PackHeader.ProgramMuxRate * 50 /*[bytes/sec]*/ * 8 /*[bits/byte]*/
-			log.Println("Pack[", i, "]: SCR[27MqHz] =", scr, ", bitrate[bps] =", bps)
+			log.Println("Pack[", i, "]: SCR[27MHz] =", scr, ", bitrate[bps] =", bps)
 			if pack.PackHeader.SystemHeader != nil {
 				log.Println(" System header: audio bound =", pack.PackHeader.SystemHeader.AudioBound)
 				log.Println(" System header: video bound =", pack.PackHeader.SystemHeader.VideoBound)
@@ -103,12 +104,16 @@ func main() {
 				}
 			}
 		}
+
+		eop <- true
 	}()
 
 	// Wait for finish
 	log.Println("Decoder: start")
 	done := <-decoder.Go()
-	if done {
+	donep := <-eop
+
+	if done && donep {
 		log.Println("Decoder: done")
 	} else {
 		log.Fatal("Decoder: Error = ", decoder.Err())
