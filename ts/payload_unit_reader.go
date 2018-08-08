@@ -39,7 +39,7 @@ type payloadUnitBuffer struct {
 }
 
 func (stream *payloadUnitBuffer) Read(p []byte) (n int, err error) {
-	if stream.state == drained {
+	if stream.state == drained || stream.buffer.Len() == 0 {
 		_, ferr := stream.fill()
 		if ferr != nil {
 			return 0, ferr
@@ -94,6 +94,10 @@ func (stream *payloadUnitBuffer) fill() (n int, err error) {
 
 		err = stream.next()
 		if err != nil {
+			stream.currentPacket = nil
+			if n > 0 {
+				err = nil
+			}
 			break
 		}
 
