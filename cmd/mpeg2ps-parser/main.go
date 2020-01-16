@@ -23,7 +23,7 @@ func main() {
 	}
 
 	// Decode the PS stream
-	bitReader := bitreader.NewBitReader(fileReader)
+	bitReader := bitreader.NewReader(fileReader)
 	decoder := ps.NewDecoder(bitReader)
 	eop := make(chan bool)
 	go func() {

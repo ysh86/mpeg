@@ -27,7 +27,7 @@ func main() {
 
 	// Demux to PES
 	pesReader := ts.NewPayloadUnitReader(fileReader, ts.IsPID(uint32(*pid)))
-	bits := bitreader.NewBitReader(pesReader)
+	bits := bitreader.NewReader(pesReader)
 	eop := make(chan error)
 	go func() {
 		var err error
